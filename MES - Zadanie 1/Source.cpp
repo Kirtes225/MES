@@ -1,81 +1,13 @@
 #include <iostream>
 #include <iomanip>
+#include "Node.h"
+#include "Element.h"
+#include "Grid.h"
+#include "GlobalData.h"
 
 using namespace std;
 double f(double, double);
 
-class node; class globalData; class grid; class element;
-
-class node {
-public:
-	double x, y, t;
-	int status;
-	node(double, double);
-	node();
-};
-
-node::node()
-{
-
-}
-
-node::node(double x, double y)
-{
-	this->x = x;
-	this->y = y;
-}
-
-class element {
-	int ID[4];
-	//walls[4]
-};
-
-class globalData {//nH - liczba elementów na danym boku
-public:
-	double H, B, nH, nB;//nB - ile elementów wchodzi na danym boku
-	double szerokosc_elementu, wysokosc_elementu;
-	void oblicz_wymiary();
-	globalData();
-};
-
-globalData::globalData()
-{
-
-}
-
-void globalData::oblicz_wymiary()
-{
-	szerokosc_elementu = B / nB;
-	wysokosc_elementu = H / nH;
-}
-
-class grid {
-public:
-	int nn, ne;//nn - liczba wezlow ne - liczba elementow
-	node *tab_wezlow;//nn
-	element *tab_elementow;//ne
-	globalData pole;
-	void stworz_wezly();
-	grid(int, int);
-};
-
-grid::grid(int x, int y)
-{
-	nn = x;
-	ne = y;
-	tab_wezlow = new node[nn];
-	tab_elementow = new element[ne];
-}
-
-void grid::stworz_wezly()
-{
-	int k = 0;
-	for (double i = 0; pole.B; i + pole.szerokosc_elementu)
-		for (double j = 0; pole.H; j + pole.szerokosc_elementu)
-		{
-			tab_wezlow[k] = node(i, j);
-		}
-}
 
 int main() {
 	int np;
@@ -101,8 +33,6 @@ int main() {
 	wagi2[0] = 1;
 	wagi2[1] = 1;
 
-	cout << punkty3[0] << endl;
-
 	double wynik = 0.0;
 	if (np == 3)
 		for (int i = 0; i<np; i++)
@@ -116,10 +46,11 @@ int main() {
 			for (int j = 0; j<np; j++)
 				wynik += f(punkty2[i], punkty2[j])*wagi2[i] * wagi2[j];
 	cout << setprecision(20) << "Wynik calkowania Gauss'em [dla " << np << " npc]: " << wynik << endl;
+
+
 	system("PAUSE");
 	return 0;
 }
-
 
 double f(double x, double y)
 {
