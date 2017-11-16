@@ -1,58 +1,45 @@
 #include <iostream>
 #include <iomanip>
+
+#include <fstream>
+#include <string>
+
 #include "Node.h"
 #include "Element.h"
 #include "Grid.h"
 #include "GlobalData.h"
 
 using namespace std;
-double f(double, double);
 
 
 int main() {
-	int np;
+	GlobalData globalData;
+	string * lines = new string[4];
+	int i = 0;
 
-	cout << "Wprowadz liczbe npc: ";
-	cin >> np;
-	
-	double *punkty3 = new double[np];
-	double *punkty2 = new double[np];
+	ifstream infile("globalData.txt");
+	string line;
+	while (getline(infile, lines[i])) {
+			cout << lines[i] << endl;
+			i++;
+	}
+	infile.close();
 
-	double *wagi3 = new double[np];
-	double *wagi2 = new double[np];
+	globalData.H = stod(lines[0]); 
+	globalData.B = stod(lines[1]);
+	globalData.nH = stoi(lines[2]);
+	globalData.nB = stoi(lines[3]);
 
-	punkty3[0] = -sqrt(3.0 / 5.0); //-0.774597
-	punkty3[1] = 0.0;
-	punkty3[2] = sqrt(3.0 / 5.0); //0.774597
-	wagi3[0] = 5.0 / 9.0;
-	wagi3[1] = 8.0 / 9.0;
-	wagi3[2] = 5.0 / 9.0;
-	
-	punkty2[0] = -1.0 / sqrt(3.0); //-0.57735
-	punkty2[1] = 1.0 / sqrt(3.0); //0.57735
-	wagi2[0] = 1;
-	wagi2[1] = 1;
+	cout << "\nTEST\n" << globalData.H << endl;
+	cout << globalData.B << endl;
+	cout << globalData.nH << endl;
+	cout << globalData.nB << endl << endl;;
 
-	double wynik = 0.0;
-	if (np == 3)
-		for (int i = 0; i<np; i++)
-			for (int j = 0; j<np; j++)
-				wynik += f(punkty3[i], punkty3[j])*wagi3[i] * wagi3[j];
-	
-	//cout<<f(punkty[i],punkty[j])<<endl;
-
-	if (np == 2)
-		for (int i = 0; i<np; i++)
-			for (int j = 0; j<np; j++)
-				wynik += f(punkty2[i], punkty2[j])*wagi2[i] * wagi2[j];
-	cout << setprecision(20) << "Wynik calkowania Gauss'em [dla " << np << " npc]: " << wynik << endl;
+	//przypisuje iloœæ wêz³ów elementów w siatce
+	Grid grid((globalData.nH + 1)*(globalData.nB + 1), globalData.nH*globalData.nH);  
+	grid.generujSiatke(globalData);
 
 
 	system("PAUSE");
 	return 0;
-}
-
-double f(double x, double y)
-{
-	return 2 * (pow(x, 2))*pow(y, 2) + 6 * x + 5;
 }
